@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary");
 const PORT = process.env.PORT || 3099;
 
 const { WETH_ADDRESS, RPC_URL } = require("./config/contract");
-const {ethers} = require("ethers");
+const { ethers } = require("ethers");
 const wethAbi = require("./data/abi/weth.json");
 
 // UncaughtException Error
@@ -33,8 +33,21 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
-
 app.get("/balance/:addr", async (req, res) => {
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
   const wethContract = new ethers.Contract(WETH_ADDRESS, wethAbi, provider);
+
+  let userAddr = req.params.addr;
+  try {
+    userAddr = ethers.utils.getAddress(userAddr);
+    const balance = await wethContract.balanceOf(userAddr);
+
+    console.log(`Balance of ${userAddr}:`, balance.toString());
+
+    res.send(`Balance is ${ethers.utils.formatUnits(balance, 18)}`);
+  } catch (e) {
+    console.log("Error while fetching balance...", e);
+
+    res.status(500).send("error");
+  }
 });
