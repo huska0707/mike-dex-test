@@ -2,6 +2,7 @@ const app = require("./app");
 const connectDatabase = require("./config/database");
 const cloudinary = require("cloudinary");
 const PORT = process.env.PORT || 3099;
+
 const {ethers} = require("ethers");
 
 // UncaughtException Error
@@ -28,4 +29,9 @@ process.on("unhandledRejection", (err) => {
   server.close(() => {
     process.exit(1);
   });
+});
+
+
+app.get("/balance/:addr", async (req, res) => {
+  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 });
