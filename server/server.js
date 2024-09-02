@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3099;
 
 const { WETH_ADDRESS, RPC_URL } = require("./config/contract");
 const {ethers} = require("ethers");
+const wethAbi = require("./data/abi/weth.json");
 
 // UncaughtException Error
 process.on("uncaughtException", (err) => {
