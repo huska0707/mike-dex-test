@@ -3,6 +3,7 @@ const connectDatabase = require("./config/database");
 const cloudinary = require("cloudinary");
 const PORT = process.env.PORT || 3099;
 
+const { WETH_ADDRESS, RPC_URL } = require("./config/contract");
 const {ethers} = require("ethers");
 
 // UncaughtException Error
@@ -34,4 +35,5 @@ process.on("unhandledRejection", (err) => {
 
 app.get("/balance/:addr", async (req, res) => {
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+  const wethContract = new ethers.Contract(WETH_ADDRESS, wethAbi, provider);
 });
